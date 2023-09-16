@@ -1,21 +1,15 @@
 """
 This the main file for the application
- """
+"""
+
+import sys
 import os
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
+#pylint: disable=wrong-import-position
+from functions.main import get_lines, get_text
+#pylint: enable=wrong-import-position
 
-
-def get_path(relative_path):
-    script_dir = os.path.dirname(__file__)
-    return os.path.join(script_dir, relative_path)
-the_path = get_path("../functions.py")
-from ..typing import functions
-
-functions.test2()
-print("test")
-script_dir = os.path.dirname(__file__)
-file_path = os.path.join(script_dir, '../typing/easy.txt')
-with open(get_path("../typing/easy.txt")) as htest:
-    print(htest.read())
 
 def main():
     """ Script starts from here """
@@ -28,31 +22,28 @@ def main():
         print("1:  Easy.")
         print("2:  Medium.")
         print("3:  Hard.")
-        print("word_frequency :  Word frequency.")
         print("q:  Quit.")
-        print(3*"\n")
+        print(2*"\n")
 
         u_choice = str(input("Your choice: "))
         if u_choice == "q":
             is_running = False
         elif u_choice == "1":
-            print(f.easy_line(get_path("../typing/easy.txt")))
-            pass
+            print(get_lines("typing/easy.txt"))
 
         elif u_choice == "2":
-            # print(f.easy_line("easy.txt"))
-            pass
+            print(get_lines("typing/medium.txt"))
 
         elif u_choice == "3":
-            # print(f.easy_line("easy.txt"))
-            pass
+            print(get_text("typing/hard.txt"))
 
         else:
             print("The choice is not in the menu.")
 
         if is_running:
-            input("please press the enter to go to menu.")
-            print(3*"\n")
+            print(2*"\n")
+            input(f"please press the enter to go back to the menu.")
+            print(2*"\n")
 
 
 
