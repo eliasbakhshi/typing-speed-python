@@ -7,7 +7,7 @@ import os
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(SCRIPT_DIR))
 #pylint: disable=wrong-import-position
-from functions.main import get_lines, get_text
+from functions.main import get_lines, get_text, show_lines
 #pylint: enable=wrong-import-position
 
 
@@ -29,7 +29,11 @@ def main():
         if u_choice == "q":
             is_running = False
         elif u_choice == "1":
-            print(get_lines("typing/easy.txt"))
+            the_lines = get_lines("typing/easy copy.txt")
+            result = show_lines(the_lines)
+            input("Press enter to see the result ...")
+            print("Feltecken:")
+            print(result)
 
         elif u_choice == "2":
             print(get_lines("typing/medium.txt"))
