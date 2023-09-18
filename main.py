@@ -2,13 +2,7 @@
 This the main file for the application
 """
 
-import sys
-import os
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.dirname(SCRIPT_DIR))
-#pylint: disable=wrong-import-position
 from functions.main import get_lines, get_text, show_lines
-#pylint: enable=wrong-import-position
 
 
 def main():
@@ -37,9 +31,17 @@ def main():
 
         elif u_choice == "2":
             print(get_lines("typing/medium.txt"))
+            result = show_lines(the_lines)
+            input("Press enter to see the result ...")
+            print("Feltecken:")
+            print(result)
 
         elif u_choice == "3":
             print(get_text("typing/hard.txt"))
+            result = show_lines(the_lines)
+            input("Press enter to see the result ...")
+            print("Feltecken:")
+            print(result)
 
         else:
             print("The choice is not in the menu.")
