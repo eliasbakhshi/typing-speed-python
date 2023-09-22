@@ -6,22 +6,25 @@ import time
 import random
 import math
 
+
 def clear_console():
     """ Clear the console """
     print(chr(27) + "[2J" + chr(27) + "[;H")
 
 
-def sanitize_str(word, characters_to_remove = None):
+def sanitize_str(word, characters_to_remove=None):
     """ Removes extra characters from the string """
     if characters_to_remove is not None and isinstance(characters_to_remove, str):
         for the_char in characters_to_remove:
             word = word.replace(the_char, "")
     return word
 
+
 def get_lines(file_name):
     """ Get text file's content line by line """
     with open(file_name, encoding="utf-8") as f_easy:
         return f_easy.readlines()
+
 
 def get_text(file_name):
     """ Get entire text file's content """
@@ -29,39 +32,39 @@ def get_text(file_name):
         return f_easy.read()
 
 
-def get_animal_name(score = 0):
+def get_animal_name(score=0):
     """ Get the an animal name according to the score """
     if 10 <= score < 20:
-        return "Sengångare"
+        return "Sloths"
     elif 20 <= score < 30:
-        return "Snigel"
+        return "Snail"
     elif 30 <= score < 40:
-        return "Sjöko"
+        return "Manatee"
     elif 40 <= score < 50:
-        return "Människa"
+        return "Human"
     elif 50 <= score < 60:
-        return "Gasell"
+        return "Gazelle"
     elif 60 <= score < 70:
-        return "Struts"
+        return "Ostrich"
     elif 70 <= score < 80:
-        return "Svärdfisk"
+        return "Swordfish"
     elif 80 <= score < 90:
-        return "Sporrgås"
+        return "Spurred goose"
     elif 90 <= score < 100:
-        return "Taggstjärtseglare"
+        return "Pintail Sailfish"
     elif 100 <= score < 120:
-        return "Kungsörn"
+        return "Golden eagle"
     elif 120 <= score:
-        return "Pilgrimsfalk"
+        return "Peregrine falcon"
     return None
+
 
 def start_practice(lines):
     """ Show lines and get info """
-    fails = {}
-    start_time = 0
+    failures = {}
     finish_time = 0
     count_written_words = 0
-    count_extra_word = count_failed_words = count_total_words = count_total_character= 0
+    count_extra_word = count_failed_words = count_total_words = count_total_character = 0
     start_time = time.time()
     for line in lines:
         line = line.strip()
@@ -69,15 +72,15 @@ def start_practice(lines):
         print(line)
         # Start timer
         the_input = input("")
-        count_total_words += int(len(sanitize_str(line,".,-()").split(" ")))
-        count_total_character += int(len(sanitize_str(the_input,".,-() \n")))
+        count_total_words += int(len(sanitize_str(line, ".,-()").split(" ")))
+        count_total_character += int(len(sanitize_str(the_input, ".,-() \n")))
         line = sanitize_str(str(line), ".,-()").strip().split(" ")
         the_input = sanitize_str(str(the_input), ".,-()").strip().split(" ")
-        #if the written line has more words
+        # if the written line has more words
         if len(the_input) > len(line):
             count_extra_word = len(the_input) - len(line)
         count_written_words += len(the_input)
-        #if the written line has more words add extra empty parameters to the list
+        # if the written line has more words add extra empty parameters to the list
         if len(line) - len(the_input):
             the_input.extend([' '] * (len(line) - len(the_input)))
         # First make a list of words to compare word by word
@@ -88,14 +91,15 @@ def start_practice(lines):
                 for the_key, the_value in enumerate(value):
                     second_word = the_input[key].ljust(len(value))
                     if the_value != second_word[the_key]:
-                        fails[the_value] = fails.get(the_value, 0) + 1
+                        failures[the_value] = failures.get(the_value, 0) + 1
 
     finish_time = time.time()
-    duration_sec =  math.ceil((finish_time - start_time))
+    duration_sec = math.ceil((finish_time - start_time))
+    print("duration_sec", duration_sec)
     gross_wpm = (count_written_words * 60) / duration_sec
     net_wpm = gross_wpm - ((count_failed_words * 60) / duration_sec)
     return {
-        "failed_letters": sorted(fails.items(), key=lambda item: item[1], reverse=True),
+        "failed_letters": sorted(failures.items(), key=lambda item: item[1], reverse=True),
         "count_extra_word": count_extra_word,
         "count_failed_words": count_failed_words,
         "count_total_words": count_total_words,
@@ -106,16 +110,14 @@ def start_practice(lines):
         "category": get_animal_name(net_wpm)
     }
 
+
 def display_result(result):
     """ Display result information in the console. """
     clear_console()
-    present_fail = 100 - ((((result['count_total_words'] -
-                             result['count_failed_words'] - result['count_extra_word'] ) /
-                             result['count_total_words']) * 100))
-    print("Feltecken:")
+    print("Failed letters:")
     print(result['failed_letters'])
-    print("Precentuellt fel: " + str(present_fail) + "%")
-    print("Total tid: ", str(result['duration']))
+    print("Percentage failure: " + str(result["percentage_failure"]) + "%")
+    print("Total time: ", str(result['duration']))
     print("Gross WPM: ", result['gross_wpm'])
     print("Net WPM: ", result['net_wpm'])
 
@@ -133,7 +135,8 @@ def save_result(file_name, result):
         f_score.write(f"{next_line}{result['name']}|{result['net_wpm']}|{result['level']}")
         return True
 
-def show_result(file_name):
+
+def show_result_table(file_name):
     """ Show the result from the score.txt """
     levels = ["easy", "medium", "hard"]
     levels.sort(reverse=True)
@@ -150,10 +153,12 @@ def show_result(file_name):
             # Print line in the format
             print(f"{the_line[0]: <20} {the_line[1]: <20} {the_line[2]: <20}")
 
+
 def get_random_char():
     """ Generate a random character. """
-    random_num = random.randint(33,126)
+    random_num = random.randint(33, 126)
     return chr(random_num)
+
 
 def practice_random_char():
     """ Get and display one random character."""
@@ -161,9 +166,8 @@ def practice_random_char():
     duration_sec = int(input("How long do you want to play in seconds? "))
     start_time = time.time()
     count_failed_character = count_total_character = 0
-    fails = {}
-
-    while duration_sec > time.time() - start_time :
+    failures = {}
+    while duration_sec > time.time() - start_time:
         clear_console()
         random_char = str(get_random_char()).strip()
         print(random_char)
@@ -171,13 +175,14 @@ def practice_random_char():
         count_total_character += 1
         if the_input != random_char:
             count_failed_character += 1
-            fails[random_char] = fails.get(random_char, 0) + 1
+            failures[random_char] = failures.get(random_char, 0) + 1
 
     gross_wpm = (count_total_character * 60) / duration_sec
     net_wpm = gross_wpm - ((count_failed_character * 60) / duration_sec)
 
     return {
-        "failed_letters": sorted(fails.items(), key=lambda item: item[1], reverse=True),
+        "failed_letters": sorted(failures.items(), key=lambda item: item[1], reverse=True),
+        "duration": duration_sec,
         "count_failed_character": count_failed_character,
         "count_total_character": count_total_character,
         "gross_wpm": gross_wpm,
