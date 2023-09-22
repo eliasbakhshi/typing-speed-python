@@ -80,11 +80,14 @@ def main():
                 print("There is not any score to show.")
 
         elif u_choice == "5":
-            mf.clear_console()
-            result = mf.practice_random_char()
-            result["percentage_failure"] = ((result['count_failed_character'] /
-                                             result['count_total_character']) * 100)
-            mf.display_result(result)
+            try:
+                mf.clear_console()
+                result = mf.practice_random_char()
+                result["percentage_failure"] = ((result['count_failed_character'] /
+                                                result['count_total_character']) * 100)
+                mf.display_result(result)
+            except ValueError:
+                print("You need to write the write value.")
         else:
             print("The choice is not in the menu.")
 
