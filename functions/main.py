@@ -66,36 +66,39 @@ def start_practice(lines):
     count_written_words = 0
     count_extra_word = count_failed_words = count_total_words = count_total_character = 0
     start_time = time.time()
+    # Go through each line and compare it with the input
     for line in lines:
         line = line.strip()
         clear_console()
         print(line)
         # Start timer
         the_input = input("")
-        count_total_words += int(len(sanitize_str(line, ".,-()").split(" ")))
-        count_total_character += int(len(sanitize_str(the_input, ".,-() \n")))
-        line = sanitize_str(str(line), ".,-()").strip().split(" ")
-        the_input = sanitize_str(str(the_input), ".,-()").strip().split(" ")
-        # if the written line has more words
+        # Make list and count words and characters
+        count_total_words += int(len(sanitize_str(line, ".").split(" ")))
+        count_total_character += int(len(sanitize_str(the_input, ". \n")))
+        line = sanitize_str(str(line), ".").strip().split(" ")
+        the_input = sanitize_str(str(the_input), ".").strip().split(" ")
+        # if the written line has more words, then save the amount of extra words.
         if len(the_input) > len(line):
             count_extra_word = len(the_input) - len(line)
         count_written_words += len(the_input)
-        # if the written line has more words add extra empty parameters to the list
+        # If the written line has more words add extra empty parameters to the list
         if len(line) - len(the_input):
             the_input.extend([' '] * (len(line) - len(the_input)))
         # First make a list of words to compare word by word
         for key, value in enumerate(line):
             if value != the_input[key]:
                 count_failed_words += 1
-                # Take the word and compare it with the given word.
+                # Take the word and compare it with the written word.
                 for the_key, the_value in enumerate(value):
+                    # Make sure that the second list has the same length
                     second_word = the_input[key].ljust(len(value))
                     if the_value != second_word[the_key]:
+                        # Count and save the fail word
                         failures[the_value] = failures.get(the_value, 0) + 1
 
     finish_time = time.time()
     duration_sec = math.ceil((finish_time - start_time))
-    print("duration_sec", duration_sec)
     gross_wpm = (count_written_words * 60) / duration_sec
     net_wpm = gross_wpm - ((count_failed_words * 60) / duration_sec)
     return {
@@ -121,6 +124,7 @@ def display_result(result):
     print("Gross WPM: ", result['gross_wpm'])
     print("Net WPM: ", result['net_wpm'])
 
+
 def save_result(file_name, result):
     """ Save the result in the score.txt """
     with open(file_name, "a+", encoding="UTF-8") as f_score:
@@ -132,14 +136,13 @@ def save_result(file_name, result):
             last_char = the_content[-1]
             if last_char != "\n":
                 next_line = "\n"
+        # Write to the end of the file.
         f_score.write(f"{next_line}{result['name']}|{result['net_wpm']}|{result['level']}")
         return True
 
 
 def show_result_table(file_name):
     """ Show the result from the score.txt """
-    levels = ["easy", "medium", "hard"]
-    levels.sort(reverse=True)
     with open(file_name, encoding="UTF-8") as f_score:
         the_lines = f_score.readlines()
         the_list = []
@@ -156,23 +159,24 @@ def show_result_table(file_name):
 
 def get_random_char():
     """ Generate a random character. """
-    random_num = random.randint(33, 126)
-    return chr(random_num)
+    return chr(random.randint(33, 126))
 
 
 def practice_random_char():
     """ Get and display one random character."""
-    # Get limited time that user want to play
+    # Initiate and save some info in the variables such as limited time
     duration_sec = int(input("How long do you want to play in seconds? "))
     start_time = time.time()
     count_failed_character = count_total_character = 0
     failures = {}
+    # Show some random character and compare it with the user's input
     while duration_sec > time.time() - start_time:
         clear_console()
         random_char = str(get_random_char()).strip()
         print(random_char)
         the_input = input("").strip()
         count_total_character += 1
+        # Compare and save if the characters do not match.
         if the_input != random_char:
             count_failed_character += 1
             failures[random_char] = failures.get(random_char, 0) + 1

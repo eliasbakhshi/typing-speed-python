@@ -4,6 +4,7 @@ This the main file for the application
 
 import functions.main as mf
 
+
 def main():
     """ Script starts from here """
     is_running = True
@@ -11,16 +12,18 @@ def main():
         # The menu
         mf.clear_console()
         print("--- <<< The menu >>> ---")
-        print("\n")
-        print("1:  Easy.")
-        print("2:  Medium.")
-        print("3:  Hard.")
-        print("4:  Show Result.")
-        print("5:  Practice character.")
-        print("")
-        print("q:  Quit.")
-        print(2*"\n")
+        print(("""
 
+1:  Easy.
+2:  Medium.
+3:  Hard.
+4:  Show Result.
+5:  Practice character.
+
+q:  Quit.
+
+
+"""))
         u_choice = str(input("Your choice: "))
         if u_choice == "q":
             is_running = False
