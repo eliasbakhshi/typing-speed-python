@@ -18,7 +18,7 @@ def main():
 2:  Medium.
 3:  Hard.
 4:  Show Result.
-5:  Practice character.
+5:  Practice Character.
 
 q:  Quit.
 

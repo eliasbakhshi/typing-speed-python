@@ -34,29 +34,21 @@ def get_text(file_name):
 
 def get_animal_name(score=0):
     """ Get the an animal name according to the score """
-    if 10 <= score < 20:
-        return "Sloths"
-    elif 20 <= score < 30:
-        return "Snail"
-    elif 30 <= score < 40:
-        return "Manatee"
-    elif 40 <= score < 50:
-        return "Human"
-    elif 50 <= score < 60:
-        return "Gazelle"
-    elif 60 <= score < 70:
-        return "Ostrich"
-    elif 70 <= score < 80:
-        return "Swordfish"
-    elif 80 <= score < 90:
-        return "Spurred goose"
-    elif 90 <= score < 100:
-        return "Pintail Sailfish"
-    elif 100 <= score < 120:
-        return "Golden eagle"
-    elif 120 <= score:
-        return "Peregrine falcon"
-    return None
+    animals = {
+        1: "Sloths",
+        2: "Snail",
+        3: "Manatee",
+        4: "Human",
+        5: "Gazelle",
+        6: "Ostrich",
+        7: "Swordfish",
+        8: "Spurred goose",
+        9: "Pintail Sailfish",
+        10: "Golden eagle",
+        12: "Peregrine falcon"
+    }
+    score = score // 10
+    return animals.get(score, None)
 
 
 def start_practice(lines):
