@@ -56,7 +56,7 @@ def start_practice(lines):
     failures = {}
     finish_time = 0
     count_written_words = 0
-    count_extra_word = count_failed_words = count_total_words = count_total_character = 0
+    count_extra_word = count_failed_words = count_total_words = count_total_characters = count_failed_characters = 0
     start_time = time.time()
     # Go through each line and compare it with the input
     for line in lines:
@@ -66,8 +66,8 @@ def start_practice(lines):
         # Start timer
         the_input = input("")
         # Make list and count words and characters
-        count_total_words += int(len(sanitize_str(line, ".").split(" ")))
-        count_total_character += int(len(sanitize_str(the_input, ". \n")))
+        count_total_words += int(len(line.split(" ")))
+        count_total_characters += int(len(sanitize_str(line, " \n")))
         line = sanitize_str(str(line), ".").strip().split(" ")
         the_input = sanitize_str(str(the_input), ".").strip().split(" ")
         # if the written line has more words, then save the amount of extra words.
@@ -87,6 +87,7 @@ def start_practice(lines):
                     second_word = the_input[key].ljust(len(value))
                     if the_value != second_word[the_key]:
                         # Count and save the fail word
+                        count_failed_characters += 1
                         failures[the_value] = failures.get(the_value, 0) + 1
 
     finish_time = time.time()
@@ -98,7 +99,8 @@ def start_practice(lines):
         "count_extra_word": count_extra_word,
         "count_failed_words": count_failed_words,
         "count_total_words": count_total_words,
-        "count_total_character": count_total_character,
+        "count_total_characters": count_total_characters,
+        "count_failed_characters": count_failed_characters,
         "duration": str(round(duration_sec, 1)) + "s",
         "gross_wpm": gross_wpm,
         "net_wpm": net_wpm,
@@ -111,7 +113,9 @@ def display_result(result):
     clear_console()
     print("Failed letters:")
     print(result['failed_letters'])
-    print("Percentage failure: " + str(result["percentage_failure"]) + "%")
+    if "percentage_right_words" in result:
+        print("Percentage right words: " + str(result["percentage_right_words"]) + "%")
+    print("Percentage right characters: " + str(result["percentage_right_characters"]) + "%")
     print("Total time: ", str(result['duration']))
     print("Gross WPM: ", result['gross_wpm'])
     print("Net WPM: ", result['net_wpm'])
@@ -159,7 +163,7 @@ def practice_random_char():
     # Initiate and save some info in the variables such as limited time
     duration_sec = int(input("How long do you want to play in seconds? "))
     start_time = time.time()
-    count_failed_character = count_total_character = 0
+    count_failed_characters = count_total_characters = 0
     failures = {}
     # Show some random character and compare it with the user's input
     while duration_sec > time.time() - start_time:
@@ -167,20 +171,21 @@ def practice_random_char():
         random_char = str(get_random_char()).strip()
         print(random_char)
         the_input = input("").strip()
-        count_total_character += 1
+        count_total_characters += 1
         # Compare and save if the characters do not match.
         if the_input != random_char:
-            count_failed_character += 1
+            count_failed_characters += 1
             failures[random_char] = failures.get(random_char, 0) + 1
 
-    gross_wpm = (count_total_character * 60) / duration_sec
-    net_wpm = gross_wpm - ((count_failed_character * 60) / duration_sec)
+    gross_wpm = (count_total_characters * 60) / duration_sec
+    net_wpm = gross_wpm - ((count_failed_characters * 60) / duration_sec)
+
 
     return {
         "failed_letters": sorted(failures.items(), key=lambda item: item[1], reverse=True),
         "duration": duration_sec,
-        "count_failed_character": count_failed_character,
-        "count_total_character": count_total_character,
+        "count_failed_characters": count_failed_characters,
+        "count_total_characters": count_total_characters,
         "gross_wpm": gross_wpm,
         "net_wpm": net_wpm
     }

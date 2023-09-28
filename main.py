@@ -31,10 +31,14 @@ q:  Quit.
             the_lines = mf.get_lines("typing/easy.txt")
             result = mf.start_practice(the_lines)
             input("Press enter to see the result ...")
-            result["percentage_failure"] = 100 - ((((result['count_total_words'] -
-                                                     result['count_failed_words'] -
-                                                     result['count_extra_word']) /
-                                                    result['count_total_words']) * 100))
+            result["percentage_right_words"] = (((result['count_total_words'] -
+                                                         result['count_failed_words'] -
+                                                         result['count_extra_word']) /
+                                                        result['count_total_words']) * 100)
+            result["percentage_right_characters"] = (((result['count_total_characters'] -
+                                                             result['count_failed_characters']) /
+                                                            result['count_total_characters']) *
+                                                           100)
             mf.display_result(result)
             result["name"] = str(input("\nEnter username to add to high score: "))
             result["level"] = "easy"
@@ -47,10 +51,14 @@ q:  Quit.
             the_lines = mf.get_lines("typing/medium.txt")
             result = mf.start_practice(the_lines)
             input("Press enter to see the result ...")
-            result["percentage_failure"] = 100 - ((((result['count_total_words'] -
-                                                     result['count_failed_words'] -
-                                                     result['count_extra_word']) /
-                                                    result['count_total_words']) * 100))
+            result["percentage_right_words"] = (((result['count_total_words'] -
+                                                         result['count_failed_words'] -
+                                                         result['count_extra_word']) /
+                                                        result['count_total_words']) * 100)
+            result["percentage_right_characters"] = (((result['count_total_characters'] -
+                                                             result['count_failed_characters']) /
+                                                            result['count_total_characters']) *
+                                                           100)
             mf.display_result(result)
             result["name"] = str(input("\nEnter username to add to high score: "))
             result["level"] = "medium"
@@ -63,10 +71,14 @@ q:  Quit.
             the_lines = mf.get_lines("typing/hard.txt")
             result = mf.start_practice(the_lines)
             input("Press enter to see the result ...")
-            result["percentage_failure"] = 100 - ((((result['count_total_words'] -
-                                                     result['count_failed_words'] -
-                                                     result['count_extra_word']) /
-                                                    result['count_total_words']) * 100))
+            result["percentage_right_words"] = (((result['count_total_words'] -
+                                                         result['count_failed_words'] -
+                                                         result['count_extra_word']) /
+                                                        result['count_total_words']) * 100)
+            result["percentage_right_characters"] = (((result['count_total_characters'] -
+                                                             result['count_failed_characters']) /
+                                                            result['count_total_characters']) *
+                                                           100)
             mf.display_result(result)
             result["name"] = str(input("\nEnter username to add to high score: "))
             result["level"] = "hard"
@@ -86,8 +98,9 @@ q:  Quit.
             try:
                 mf.clear_console()
                 result = mf.practice_random_char()
-                result["percentage_failure"] = ((result['count_failed_character'] /
-                                                result['count_total_character']) * 100)
+                result["percentage_right_characters"] = (((result['count_total_characters'] -
+                                                           result['count_failed_characters']) /
+                                                          result['count_total_characters']) * 100)
                 mf.display_result(result)
             except ValueError:
                 print("You need to write the write value.")
